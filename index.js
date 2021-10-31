@@ -5,44 +5,50 @@ const ejs = require('ejs')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const BlogPost = require('./models/BlogPost.js')
+const fileUpload = require('express-fileupload')
 
-mongoose.connect('mongodb://localhost/my_database', {useNewUrlParser:true});
+mongoose.connect('mongodb://localhost/my_database', { useNewUrlParser: true });
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended:true}))
-app.set('view engine','ejs')
+app.use(bodyParser.urlencoded({ extended: true }))
+app.set('view engine', 'ejs')
 app.use(express.static('public'))
+app.use(fileUpload())
 
-app.listen(3000,()=>{
+app.listen(3000, () => {
     console.log("App listening on port 3000")
 })
 
-app.get('/',async(req,res)=>{
+app.get('/', async (req, res) => {
     const blogposts = await BlogPost.find({})
-    res.render('index',{
+    res.render('index', {
         blogposts
     });
 })
 
-app.get('/about',(req,res)=>{
+app.get('/about', (req, res) => {
     //res.sendFile(path.resolve(__dirname,'pages/about.html'))
     res.render('about')
 })
-app.get('/contact',(req,res)=>{
+app.get('/contact', (req, res) => {
     //res.sendFile(path.resolve(__dirname,'pages/contact.html'))
     res.render('contact')
 })
-app.get('/post/:id',async(req,res)=>{
+app.get('/post/:id', async (req, res) => {
     const blogpost = await BlogPost.findById(req.params.id)
-    res.render('post',{
+    res.render('post', {
         blogpost
     })
 })
-app.get('/posts/new',(req,res)=>{
+app.get('/posts/new', (req, res) => {
     res.render('create')
 })
 
-app.post('/posts/store',async(req,res)=>{
-    // model create a new doc with browser date
-    await BlogPost.create(req.body)
-    res.redirect('/')
+app.post('/posts/store', (req, res) => {
+    let image = req.files.image;
+    image.mv(path.resolve(__dirname, 'public/img', image.name), async (error) => {
+        await BlogPost.create({
+            titlebody:req.body, image:'/img/' + image.name
+        })
+        res.redirect('/')
+    })
 })

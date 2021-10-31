@@ -25,16 +25,16 @@
                     <div class="post-preview">
                         <a href="/post/<%= blogposts[i]._id %> ">
                             <h2 class="post-title">
-                                <%= blogposts[i].title %>
+                                <%= blogposts[i].titlebody.title %>
                             </h2>
                             <h3 class="post-subtitle">
-                                <%= blogposts[i].body %>
+                                <%= blogposts[i].titlebody.body %>
                             </h3>
                         </a>
                         <p class="post-meta">
                             Posted by
-                            <a href="#"><%= blogposts[i].username %> </a>
-                            on <%= blogposts[i].datePosted.toDateString() %>
+                            <a href="#"><%= blogposts[i].titlebody.username %> </a>
+                            on <%= blogposts[i].titlebody.datePosted.toDateString() %>
                         </p>
                     </div>
                     <!-- Divider-->
