@@ -11,6 +11,10 @@ const homeController = require('./controllers/home')
 const storePostController = require('./controllers/storePost')
 const getPostController = require('./controllers/getPost')
 const newPostController = require('./controllers/newPost')
+const newUserController = require('./controllers/newUser')
+const storeUserController = require('./controllers/storeUser')
+const loginController = require('./controllers/login')
+const loginUserController = require('./controllers/liginUser')
 
 mongoose.connect('mongodb://localhost/my_database', { useNewUrlParser: true });
 app.use(bodyParser.json())
@@ -19,6 +23,10 @@ app.set('view engine', 'ejs')
 app.use(express.static('public'))
 app.use(fileUpload())
 app.use('/posts/store', validationMiddleWare)
+app.get('/auth/register', newUserController)
+app.post('/users/register', storeUserController)
+app.get('/auth/login', loginController);
+app.post('/users/login', loginUserController)
 
 app.listen(3000, () => {
     console.log("App listening on port 3000")
