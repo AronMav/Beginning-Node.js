@@ -20,6 +20,7 @@ const storeUserController = require('./controllers/storeUser')
 const loginController = require('./controllers/login')
 const loginUserController = require('./controllers/loginUser')
 const logoutController = require('./controllers/logout')
+const flash = require('connect-flash');
 
 app.set('view engine', 'ejs')
 app.use(bodyParser.json())
@@ -35,6 +36,8 @@ app.use("*", (req, res, next) => {
     loggedIn = req.session.userId;
     next()
 });
+
+app.use(flash());
 
 app.listen(3000, () => {
     console.log("App listening on port 3000")
