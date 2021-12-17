@@ -2,14 +2,16 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
 const BlogPostSchema = new Schema({
-    titlebody:{
-        title: String,
-        body: String,
-        username: String,
-        datePosted:{ /* can declare property type with an abject like this because we need 'default' */
-            type: Date,
-            default: new Date()
-        }
+    title: String,
+    body: String,
+    userid: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    datePosted:{ /* can declare property type with an abject like this because we need 'default' */
+        type: Date,
+        default: new Date()
     },
     image: String
 });
